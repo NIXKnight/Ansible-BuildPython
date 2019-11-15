@@ -1,2 +1,30 @@
 ---
 # defaults file for Ansible-BuildPython
+PYTHON_APT_PKG: ""
+PYTHON_BUILD_DEP:
+  pkg: "{{ PYTHON_APT_PKG }}"
+  state: "build-dep"
+  install_recommends: "yes"
+PYTHON_ADDITIONAL_BUILD_DEP:
+  pkg:
+    - "build-essential"
+    - "zlib1g-dev"
+    - "libbz2-dev"
+    - "liblzma-dev"
+    - "libncurses5-dev"
+    - "libsqlite3-dev"
+    - "libssl-dev"
+    - "tk-dev"
+    - "libgdbm-dev"
+    - "libreadline-dev"
+    - "libffi-dev"
+    - "libdb-dev"
+    - "libxml2-dev"
+    - "libxslt1-dev"
+    - "libmpdec-dev"
+    - "uuid-dev"
+  state: "present"
+  install_recommends: "no"
+PYTHON_VERSION: ""
+PYTHON_TARBALL_URL: "https://www.python.org/ftp/python/{{ PYTHON_VERSION }}/Python-{{ PYTHON_VERSION }}.tgz"
+PYTHON_SRC_LOCAL_PATH: "/usr/src"

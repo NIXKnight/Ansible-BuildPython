@@ -1,2 +1,21 @@
 ---
 # tasks file for Ansible-BuildPython
+- name: Install Updates
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install Python Build Dependencies
+  apt:
+    pkg: "{{ item.pkg }}"
+    state: "{{ item.state }}"
+    install_recommends: "{{ item.install_recommends }}"
+  with_items:
+    - "{{ PYTHON_BUILD_DEP }}"
+    - "{{ PYTHON_ADDITIONAL_BUILD_DEP }}"
+
+- name: Download and Extract Python {{ PYTHON_VERSION }} Tarball
+  unarchive:
+    src: "{{ PYTHON_TARBALL_URL }}"
+    dest: "{{ PYTHON_SRC_LOCAL_PATH }}"
+    remote_src: yes
