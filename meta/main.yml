@@ -1,6 +1,7 @@
 dependencies: []
 galaxy_info:
   author: Saad Ali
+  description: Ansible role for building Python from source.
   license: license (MIT)
   min_ansible_version: 2.9
   platforms:
