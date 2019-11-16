@@ -19,3 +19,29 @@
     src: "{{ PYTHON_TARBALL_URL }}"
     dest: "{{ PYTHON_SRC_LOCAL_PATH }}"
     remote_src: yes
+
+- name: Run Python {{ PYTHON_VERSION }} Configure Script
+  shell: "./configure {% for OPTION in PYTHON_CONFIGURE_OPTIONS %}{{ OPTION }}{% if not loop.last %} {% endif %}{% endfor %}"
+  args:
+    executable: "/bin/bash"
+    chdir: "{{ PYTHON_SRC_LOCAL_PATH }}/Python-{{ PYTHON_VERSION }}"
+  environment:
+    CC: "{{ PYTHON_BUILD_ENV.CC }}"
+    CFLAGS: "{{ PYTHON_BUILD_ENV.CFLAGS }}"
+    LDFLAGS: "{{ PYTHON_BUILD_ENV.LDFLAGS }}"
+    CPPFLAGS: "{{ PYTHON_BUILD_ENV.CPPFLAGS }}"
+
+- name: Build and Install Python {{ PYTHON_VERSION }}
+  shell: "{{ item }}"
+  args:
+    executable: "/bin/bash"
+    chdir: "{{ PYTHON_SRC_LOCAL_PATH }}/Python-{{ PYTHON_VERSION }}"
+  with_items:
+    - "make -j{{ ansible_processor_vcpus }}"
+    - "make install"
+
+- name: Add Run-Time Linker Configuration for Python {{ PYTHON_VERSION }}
+  template:
+    src: "templates/etc/ld.so.conf.d/python-build.conf.j2"
+    dest: "/etc/ld.so.conf.d/python-build.conf"
+  notify: Run ldconfig
