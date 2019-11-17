@@ -44,4 +44,36 @@
   template:
     src: "templates/etc/ld.so.conf.d/python-build.conf.j2"
     dest: "/etc/ld.so.conf.d/python-build.conf"
-  notify: Run ldconfig
+
+- name: Run ldconfig
+  shell: "ldconfig"
+  args:
+    executable: "/bin/bash"
+
+- name: Download get-pip.py Script
+  get_url:
+    url: "{{ PYTHON_PIP_SCRIPT_URL }}"
+    dest: "/tmp/get-pip.py"
+    mode: '0600'
+  when: PYTHON_INSTALL_PIP
+
+- name: Run get-pip.py Script
+  shell: "{{ PYTHON_INSTALL_BIN }} /tmp/get-pip.py"
+  args:
+    executable: "/bin/bash"
+  when: PYTHON_INSTALL_PIP
+
+- name: Remove get-pip.py Script
+  file:
+    path: "/tmp/get-pip.py"
+    state: absent
+  when: PYTHON_INSTALL_PIP
+
+- name: Install virtualenv
+  pip:
+    name: "virtualenv"
+    state: "present"
+    executable: "{{ PYTHON_INSTALL_BIN }}"
+  vars:
+    ansible_python_interpreter: "{{ PYTHON_INSTALL_BIN }}"
+  when: PYTHON_INSTALL_VIRTUALENV

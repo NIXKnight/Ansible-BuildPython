@@ -29,6 +29,7 @@ PYTHON_VERSION: ""
 PYTHON_TARBALL_URL: "https://www.python.org/ftp/python/{{ PYTHON_VERSION }}/Python-{{ PYTHON_VERSION }}.tgz"
 PYTHON_SRC_LOCAL_PATH: "/usr/src"
 PYTHON_INSTALL_PREFIX: "/usr/local"
+PYTHON_INSTALL_BIN: "{{ PYTHON_INSTALL_PREFIX }}/bin/python{{ PYTHON_VERSION.split('.')[0] }}.{{ PYTHON_VERSION.split('.')[1] }}"
 PYTHON_BUILD_ENV:
   CC: "x86_64-linux-gnu-gcc"
   CFLAGS: "-g -fstack-protector-strong -Wformat -Werror=format-security"
@@ -47,3 +48,6 @@ PYTHON_CONFIGURE_OPTIONS:
   - "--without-ensurepip"
   - "--enable-optimizations"
 PYTHON_LD_CONIG_PATH: "{{ PYTHON_INSTALL_PREFIX }}/lib"
+PYTHON_PIP_SCRIPT_URL: "https://bootstrap.pypa.io/get-pip.py"
+PYTHON_INSTALL_PIP: True
+PYTHON_INSTALL_VIRTUALENV: True

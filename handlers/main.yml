@@ -1,6 +1,0 @@
----
-# handlers file for Ansible-BuildPython
-- name: Run ldconfig
-  shell: "ldconfig"
-  args:
-    executable: "/bin/bash"
